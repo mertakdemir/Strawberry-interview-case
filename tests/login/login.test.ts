@@ -1,29 +1,27 @@
-import { test, expect } from '@playwright/test'
-import { existingUsers } from '../../test-setup/localstorage.setup'
+import { test, expect } from '@playwright/test';
+import { existingUsers } from '../../test-setup/localstorage.setup';
+import { LoginPage } from '../../pages/loginPage'; 
 
-test.describe.configure({ mode: 'serial' })
+test.describe.configure({ mode: 'serial' });
+
+
 
 test.describe('login form tests', () => {
   test('logging in works with existing account', async ({ page }) => {
-    await page.goto('localhost:8080/login')
+    const loginPage = new LoginPage(page);  // Creating object from Login Page
+    
+    await loginPage.url();
 
-    const existingUser = existingUsers[0]
+    const existingUser = existingUsers[0];  // Testing the existing user
 
-    await page
-      .locator('#root form div:nth-child(1) > div > input')
-      .pressSequentially(existingUser.email)
+    // Filling the login form
+    await loginPage.fillLoginForm(existingUser.email, existingUser.password);
 
-    await page
-      .locator('#root form div:nth-child(2) > div > input')
-      .pressSequentially(existingUser.password)
+    // Clicking the Log in button
+    await loginPage.submitLogin();
 
-    // Submit button
-    const button = page.locator('form .MuiButton-sizeMedium')
-    // Click on the button
-    button.click()
+    // Verify that Log out button is visible
+    await loginPage.verifyLogoutButtonVisible();
 
-    // Wait for 1 second until page is fully loaded
-    await page.waitForTimeout(1000)
-    await expect(page.getByText('Log out')).toBeVisible()
-  })
-})
+  });
+});
