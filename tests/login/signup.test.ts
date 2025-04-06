@@ -32,9 +32,10 @@ test.describe('Sign up form validations', () => {
 
     loginPage = new LoginPage(page); 
     await loginPage.url();
-    await loginPage.fillLoginFormAfterSigningUp(email, password);  //Verifies that Log in can be done with the User created in the Sign Up phase.
+    await loginPage.fillLoginForm(email, password);  //Verifies that Log in can be done with the User created in the Sign Up phase.
     await loginPage.submitLogin();
     await loginPage.verifyLogoutButtonVisible();
+
   });
 
   test('should not sign up without first name', async () => {

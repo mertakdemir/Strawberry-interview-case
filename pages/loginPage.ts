@@ -23,11 +23,6 @@ export class LoginPage {
     await this.page.locator(this.passwordInput).fill(password);
   }
 
-  async fillLoginFormAfterSigningUp(email: string, password: string) {
-    await this.page.fill(this.emailInput, email);
-    await this.page.fill(this.passwordInput, password);
-  }
-
   // Clicking the login button
   async submitLogin() {
     await this.page.locator(this.submitButton).click();
